@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: ollama/ollama
+  pullPolicy: IfNotPresent
+  tag: ""
+
+ollama:
+  port: 11434
+
+  gpu:
+    enabled: false
+
+  models:
+    pull:
+      - llama3   # auto download model
+    run: []
+    create: []
+    clean: false
+
+service:
+  type: ClusterIP
+  port: 11434
+
+resources:
+  requests:
+    cpu: "1"
+    memory: "2Gi"
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+
+# ❗ Disabled to avoid PVC error in KodeKloud
+persistentVolume:
+  enabled: false
+
+livenessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 60
+
+readinessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 30
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+initContainers: []
+
+extraEnv: []
+
+extraEnvFrom: []
